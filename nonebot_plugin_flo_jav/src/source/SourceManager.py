@@ -97,7 +97,8 @@ class SourceManager:
         for name, source in self._sources.items():
             logger.info(f"尝试从 {name} 获取 {avid}")
             if (html := await source.get_html(avid)) is not None:
-                if (info := source.parse_html(html)) is not None:
+                if (info := source.parse_html(avid, html)) is not None:
+                    await self.save_all_resources(info)
                     return info
         return None
 
@@ -122,7 +123,8 @@ class SourceManager:
 
         if (html := await source.get_html(avid)) is not None:
             logger.info(f"成功从源 {source_str} 获取 html")
-            if (info := source.parse_html(html)) is not None:
+            if (info := source.parse_html(avid, html)) is not None:
+                await self.save_all_resources(info)
                 return info
 
         return None
@@ -157,8 +159,6 @@ class SourceManager:
 
     def get_image_path(self, avid: str) -> Optional[Path]:
         image_path = self.image_dir / f"{avid.upper()}.jpg"
-        if not image_path.exists():
-            return None
         return image_path
 
 

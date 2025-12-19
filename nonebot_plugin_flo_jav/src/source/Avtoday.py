@@ -33,30 +33,14 @@ class Avtoday(SourceBase):
                 return content
         return None
 
-    def parse_html(self, html: str) -> Optional[AVInfo]:
+    def parse_html(self, avid: str, html: str) -> Optional[AVInfo]:
         info = AVInfo()
         try:
-            # 提取avid
-            avid = None
-            avid_patterns = [
-                r'<span>番号:</span>\n<span>([^"]+)</span>'
-            ]
-            for pattern in avid_patterns:
-                logger.debug(f"pattern: {pattern}")
-                match = re.search(pattern, html)
-                if match:
-                    logger.debug("avid matched!")
-                    avid = match.group(1).upper()
-                    logger.debug(f"AVID: {avid}")
-                    break
-            # if avid is None:
-            #     return None
-
             # 提取标题
             title = None
             title_patterns = [
                 r'<meta property="og:title" content="([^"]+)"',
-                r'<span>标题:</span>\n<span>([^"]+)</span>',
+                r'<span>标题:</span>\s*<span>([^<]+)</span>',
             ]
             for pattern in title_patterns:
                 match = re.search(pattern, html)
@@ -70,22 +54,25 @@ class Avtoday(SourceBase):
             # 提取封面url
             image_url = None
             image_url_patterns = [
-                r'<meta property="og:image" content="([^"]+)',
+                r'<meta property="og:image" content="([^"]+)"',
             ]
             for pattern in image_url_patterns:
                 match = re.search(pattern, html)
                 if match:
                     image_url = match.group(1).strip()
+                    logger.debug(f"Image URL: {image_url}")
                     break
             if image_url is None:
                 return None
 
-            return info.update_from_source({
+            info.update_from_source({
                 "source": self.get_source_name(),
                 "title": title,
                 "avid": avid,
                 "image_url": image_url,
             })
+
+            return info
         except Exception as e:
             logger.error(f"Avtoday解析失败: {e}")
             return None

@@ -100,7 +100,7 @@ class SourceBase:
     async def get_html(self, avid: str) -> Optional[str]:
         raise NotImplementedError
 
-    def parse_html(self, html: str) -> Optional[AVInfo]:
+    def parse_html(self, avid: str, html: str) -> Optional[AVInfo]:
         raise NotImplementedError
 
     async def fetch_html(self, url: str, referer: str = "") -> Optional[str]:

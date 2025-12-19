@@ -1,5 +1,7 @@
 from nonebot import require
 
+from .model import AVInfo
+
 require("nonebot_plugin_alconna")
 from nonebot_plugin_alconna import *
 
@@ -12,7 +14,6 @@ __plugin_meta__ = PluginMetadata(
     name="nonebot-plugin-flo-jav",
     description="nonebot-plugin-flo-jav",
     usage="""
-
     """,
     homepage="https://github.com/Florenz0707/nonebot-plugin-flo-jav",
     type="application",
@@ -22,6 +23,19 @@ __plugin_meta__ = PluginMetadata(
         "author": "florenz0707",
     }
 )
+
+
+async def intro_sender(info: AVInfo, uid: str):
+    content = (UniMessage.text(info.to_string()).
+               image(path=source_manager.get_image_path(info.get_avid())))
+    node = CustomNode(uid=uid, name="", content=content)
+    try:
+        await UniMessage.reference(node).finish()
+    except nonebot.adapters.onebot.v11.exception.ActionFailed as error:
+        error = str(error)
+        if "发送转发消息" in error and "失败" in error:
+            await UniMessage.text(f"[{info.get_avid()}]发送转发消息失败了！").finish()
+
 
 query = on_alconna(
     Alconna(
@@ -34,6 +48,7 @@ query = on_alconna(
 
 @query.handle()
 async def abstract_handler(
+        session: Session,
         avid: Match[str] = AlconnaMatch("avid")):
     if not avid.available:
         await UniMessage.text("听不懂哦~ 再试一次吧~").finish()
@@ -41,4 +56,4 @@ async def abstract_handler(
     info = await source_manager.get_info_from_any_source(avid)
     if info is None:
         await UniMessage.text("获取失败了！").finish()
-    await UniMessage.finish(info.to_string())
+    await intro_sender(info, session.self_id)
