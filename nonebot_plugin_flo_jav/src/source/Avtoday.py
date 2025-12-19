@@ -85,3 +85,6 @@ class Avtoday(SourceBase):
         except Exception as e:
             logger.error(f"Avtoday解析失败: {e}")
             return None
+
+
+avtoday = Avtoday()

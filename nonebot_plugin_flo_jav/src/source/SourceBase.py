@@ -12,7 +12,7 @@ from ..model import SourceCookie
 
 from ..repository.CookieRepo import CookieRepo, cookie_repo
 
-from ..constants import HEADERS
+from ..constants import HEADERS, IMPERSONATE
 
 
 class SourceBase:
@@ -60,7 +60,7 @@ class SourceBase:
                 proxies=self.proxies,
                 headers=headers,
                 timeout=self.timeout,
-                impersonate="edge",
+                impersonate=IMPERSONATE,
             )
             try:
                 response.raise_for_status()
@@ -116,7 +116,7 @@ class SourceBase:
                 proxies=self.proxies,
                 headers=headers,
                 timeout=self.timeout,
-                impersonate="edge",
+                impersonate=IMPERSONATE,
             )
             response.raise_for_status()
             return response.text
@@ -135,7 +135,7 @@ class SourceBase:
             response = requests.get(
                 url,
                 stream=True,
-                impersonate="edge",
+                impersonate=IMPERSONATE,
                 proxies=self.proxies,
                 headers=headers,
                 timeout=self.timeout,

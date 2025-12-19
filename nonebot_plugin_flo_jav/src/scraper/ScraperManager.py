@@ -1,0 +1,62 @@
+"""
+Scraper 管理器 - 管理所有刮削器的注册和调用
+"""
+from typing import Optional, Dict, List, Tuple
+
+from nonebot.log import logger
+
+from .ScraperBase import ScraperBase
+from .Javbus import javbus, busdmm, dmmsee
+
+from ..config import jav_config
+
+
+class ScraperManager:
+    """刮削器管理器"""
+
+    # 刮削器类映射
+    SCRAPER_CLASSES = {
+        'javbus': javbus,
+        'busdmm': busdmm,
+        'dmmsee': dmmsee,
+    }
+
+    def __init__(self, proxy: Optional[str] = None):
+        self.proxy = proxy
+        self.scrapers: Dict[str, ScraperBase] = {}
+
+        for name, scraper in self.SCRAPER_CLASSES.items():
+            scraper = scraper(proxy)
+            self.scrapers[scraper.get_scraper_name()] = scraper
+            logger.info(f"注册刮削器: {scraper.get_scraper_name()}, 域名: {scraper.get_domain()}")
+
+    def get_scrapers(self) -> List[Tuple[str, ScraperBase]]:
+        """获取所有已注册的刮削器列表"""
+        return [(name, scraper) for name, scraper in self.scrapers.items()]
+
+    def scrape(self, avid: str) -> Optional[dict]:
+        """
+        遍历所有刮削器获取元数据
+        返回第一个成功获取的元数据
+        """
+        avid = avid.upper()
+        for name, scraper in self.get_scrapers():
+            metadata = scraper.scrape(avid)
+            if metadata:
+                return metadata
+        logger.warning(f"无法从任何刮削源获取 {avid} 的元数据")
+        return None
+
+    def scrape_from_specific(self, avid: str, scraper_name: str) -> Optional[dict]:
+        """
+        从指定的刮削器获取元数据
+        """
+        avid = avid.upper()
+        scraper = self.scrapers.get(scraper_name)
+        if scraper:
+            return scraper.scrape(avid)
+        logger.warning(f"刮削器 {scraper_name} 未注册")
+        return None
+
+
+scraper_manager = ScraperManager(jav_config.jav_proxy)
