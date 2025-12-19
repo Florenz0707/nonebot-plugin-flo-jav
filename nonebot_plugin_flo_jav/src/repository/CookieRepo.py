@@ -8,23 +8,13 @@ from nonebot.log import logger
 class CookieRepo(RepoBase):
     def __init__(self):
         super().__init__()
-        self._cursor.execute("""
-                             CREATE TABLE IF NOT EXISTS source_cookie
-                             (
-                                 source
-                                 VARCHAR
-                             (
-                                 32
-                             ) PRIMARY KEY,
-                                 cookie VARCHAR
-                             (
-                                 32
-                             ) NOT NULL,
-                                 updated_at VARCHAR
-                             (
-                                 32
-                             ) NOT NULL,
-                             """)
+        create_table_cmd = """
+                             CREATE TABLE IF NOT EXISTS source_cookie (
+                                source text PRIMARY KEY,
+                                cookie text NOT NULL,
+                                updated_at text NOT NULL )
+                             """
+        self._cursor.execute(create_table_cmd)
         self._database.commit()
 
     def get_source_cookie(self, source: str) -> SourceCookie | None:

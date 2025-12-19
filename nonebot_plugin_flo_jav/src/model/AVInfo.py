@@ -26,7 +26,7 @@ class AVInfo:
     def get_duration(self) -> Optional[str]:
         return self._duration
 
-    def get_directory(self) -> Optional[str]:
+    def get_director(self) -> Optional[str]:
         return self._director
 
     def get_image_url(self) -> Optional[str]:
@@ -52,3 +52,19 @@ class AVInfo:
             self._director = scrape_data['director']
         if scrape_data.get('image_url') and self._image_url is None:
             self._image_url = scrape_data['image_url']
+
+    @classmethod
+    def generate_from_db(cls, data: tuple[str, str, str, str, str, str, str]):
+        result = AVInfo()
+        result._avid = data[0]
+        result._title = data[1]
+        result._source = data[2]
+        result._release_date = data[3]
+        result._duration = data[4]
+        result._director = data[5]
+        result._image_url = data[6]
+        return result
+
+    def to_string(self):
+        return f"AVID：{self._avid}\n标题：{self._title}\n来源：{self._source}\n发行日期：{self._release_date}\n" \
+                f"时长：{self._duration}\n导演：{self._director}"

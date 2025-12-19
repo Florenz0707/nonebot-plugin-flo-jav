@@ -6,7 +6,7 @@ from typing import Optional, Dict, List, Tuple
 from nonebot.log import logger
 
 from .ScraperBase import ScraperBase
-from .Javbus import javbus, busdmm, dmmsee
+from .Javbus import Javbus, Busdmm, Dmmsee
 
 from ..config import jav_config
 
@@ -16,9 +16,9 @@ class ScraperManager:
 
     # 刮削器类映射
     SCRAPER_CLASSES = {
-        'javbus': javbus,
-        'busdmm': busdmm,
-        'dmmsee': dmmsee,
+        'javbus': Javbus,
+        'busdmm': Busdmm,
+        'dmmsee': Dmmsee
     }
 
     def __init__(self, proxy: Optional[str] = None):

@@ -21,13 +21,13 @@ class Avtoday(SourceBase):
     def get_source_name(self) -> str:
         return "Avtoday"
 
-    def get_html(self, avid: str) -> Optional[str]:
+    async def get_html(self, avid: str) -> Optional[str]:
         avid_upper = avid.upper()
         urls = [
             f"https://{self.domain}/video/{avid_upper}",
         ]
         for url in urls:
-            content = self.fetch_html(url)
+            content = await self.fetch_html(url)
             if content:
                 logger.info(f"成功获取Avtoday页面: {avid.upper()}")
                 return content
@@ -39,15 +39,18 @@ class Avtoday(SourceBase):
             # 提取avid
             avid = None
             avid_patterns = [
-                r'<span>番号:</span>\n<span>([^"]+)</span>',
+                r'<span>番号:</span>\n<span>([^"]+)</span>'
             ]
             for pattern in avid_patterns:
+                logger.debug(f"pattern: {pattern}")
                 match = re.search(pattern, html)
                 if match:
+                    logger.debug("avid matched!")
                     avid = match.group(1).upper()
+                    logger.debug(f"AVID: {avid}")
                     break
-            if avid is None:
-                return None
+            # if avid is None:
+            #     return None
 
             # 提取标题
             title = None
@@ -59,6 +62,7 @@ class Avtoday(SourceBase):
                 match = re.search(pattern, html)
                 if match:
                     title = match.group(1).strip()
+                    logger.debug(f"Title: {title}")
                     break
             if title is None:
                 return None
@@ -85,6 +89,3 @@ class Avtoday(SourceBase):
         except Exception as e:
             logger.error(f"Avtoday解析失败: {e}")
             return None
-
-
-avtoday = Avtoday()

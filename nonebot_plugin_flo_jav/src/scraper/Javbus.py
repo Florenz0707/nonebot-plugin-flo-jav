@@ -104,8 +104,3 @@ class Dmmsee(Javbus):
 
     def get_scraper_name(self) -> str:
         return "Dmmsee"
-
-
-javbus = Javbus()
-busdmm = Busdmm()
-dmmsee = Dmmsee()

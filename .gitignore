@@ -209,3 +209,6 @@ __marimo__/
 .idea/
 .vscode/
 .DS_STORE
+
+*.html
+data/

@@ -97,13 +97,13 @@ class SourceBase:
             logger.error(f"{self.get_source_name()}: 从数据库加载cookie失败: {str(e)}")
             return False
 
-    def get_html(self, avid: str) -> Optional[str]:
+    async def get_html(self, avid: str) -> Optional[str]:
         raise NotImplementedError
 
     def parse_html(self, html: str) -> Optional[AVInfo]:
         raise NotImplementedError
 
-    def fetch_html(self, url: str, referer: str = "") -> Optional[str]:
+    async def fetch_html(self, url: str, referer: str = "") -> Optional[str]:
         logger.info(f"fetch url: {url}")
         try:
             headers = HEADERS.copy()
@@ -124,7 +124,7 @@ class SourceBase:
             logger.error(f"请求失败: {str(e)}")
             return None
 
-    def download_file(self, url: str, save_path: str, referer: str = "") -> bool:
+    async def download_file(self, url: str, save_path: str, referer: str = "") -> bool:
         """下载文件到指定路径"""
         try:
             headers = HEADERS.copy()
