@@ -92,7 +92,6 @@ class AVInfoRepo(RepoBase):
         return AVInfo.generate_from_db(result) if result else None
 
     def create_or_update_avinfo(self, avinfo: AVInfo) -> bool:
-        logger.debug(avinfo.to_string())
         avid = avinfo.get_avid()
         title = avinfo.get_title()
         source = avinfo.get_source()

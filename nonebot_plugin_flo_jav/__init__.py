@@ -11,10 +11,13 @@ from nonebot_plugin_uninfo import *
 
 from .scraper.ScraperManager import scraper_manager
 
+from .config import Config
+
 __plugin_meta__ = PluginMetadata(
     name="nonebot-plugin-flo-jav",
-    description="nonebot-plugin-flo-jav",
+    description="Florenz的JAV元数据查询插件。",
     usage="""
+    jav.q avid 查询番号为avid的元数据
     """,
     homepage="https://github.com/Florenz0707/nonebot-plugin-flo-jav",
     type="application",
@@ -54,7 +57,6 @@ async def abstract_handler(
     if not avid.available:
         await UniMessage.text("听不懂哦~ 再试一次吧~").finish()
     avid = avid.result.upper()
-    logger.info(f"Dealing with {avid}")
     info = await scraper_manager.scrape_from_any(avid)
     if info is None:
         await UniMessage.text("获取失败了！").finish()

@@ -66,8 +66,6 @@ class ScraperBase:
         if html := await self.get_html(avid):
             if metadata := self.parse_html(avid, html):
                 logger.info(f"成功从 {self.get_scraper_name()} 获取 {avid} 的元数据")
-                for key, data in metadata.items():
-                    logger.debug(f"{key}: {data}")
                 return AVInfo.generate_from_scrapper(metadata)
         return None
 

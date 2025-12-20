@@ -85,7 +85,6 @@ class ScraperManager:
             self.avinfo_repo.create_or_update_avinfo(metadata)
             logger.info(f"成功从{scraper.get_scraper_name()}刮削数据！准备下载封面图......")
             if await scraper.download_image(metadata.get_image_url(), self.get_image_path(avid)):
-                logger.info(f"图片成功下载于{self.get_image_path(avid)}")
                 return metadata
         return None
 
