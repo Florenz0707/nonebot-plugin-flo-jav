@@ -9,7 +9,7 @@ from nonebot_plugin_alconna import *
 require("nonebot_plugin_uninfo")
 from nonebot_plugin_uninfo import *
 
-from .source.SourceManager import source_manager
+from .scraper.ScraperManager import scraper_manager
 
 __plugin_meta__ = PluginMetadata(
     name="nonebot-plugin-flo-jav",
@@ -28,7 +28,7 @@ __plugin_meta__ = PluginMetadata(
 
 async def intro_sender(info: AVInfo, uid: str):
     content = (UniMessage.text(info.to_string()).
-               image(path=source_manager.get_image_path(info.get_avid())))
+               image(path=scraper_manager.get_image_path(info.get_avid())))
     node = CustomNode(uid=uid, name="", content=content)
     try:
         await UniMessage.reference(node).finish()
@@ -55,7 +55,7 @@ async def abstract_handler(
         await UniMessage.text("听不懂哦~ 再试一次吧~").finish()
     avid = avid.result.upper()
     logger.info(f"Dealing with {avid}")
-    info = await source_manager.get_info_from_any_source(avid)
+    info = await scraper_manager.scrape_from_any(avid)
     if info is None:
         await UniMessage.text("获取失败了！").finish()
     await intro_sender(info, session.self_id)
