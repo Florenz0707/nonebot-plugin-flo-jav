@@ -9,11 +9,13 @@ class CookieRepo(RepoBase):
     def __init__(self):
         super().__init__()
         create_table_cmd = """
-                             CREATE TABLE IF NOT EXISTS source_cookie (
-                                source text PRIMARY KEY,
-                                cookie text NOT NULL,
-                                updated_at text NOT NULL )
-                             """
+                           CREATE TABLE IF NOT EXISTS source_cookie
+                           (
+                               source     text PRIMARY KEY,
+                               cookie     text NOT NULL,
+                               updated_at text NOT NULL
+                           ) \
+                           """
         self._cursor.execute(create_table_cmd)
         self._database.commit()
 

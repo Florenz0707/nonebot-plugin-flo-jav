@@ -1,4 +1,5 @@
 from nonebot import require
+from nonebot.log import logger
 
 from .model import AVInfo
 
@@ -31,7 +32,7 @@ async def intro_sender(info: AVInfo, uid: str):
     node = CustomNode(uid=uid, name="", content=content)
     try:
         await UniMessage.reference(node).finish()
-    except nonebot.adapters.onebot.v11.exception.ActionFailed as error:
+    except Exception as error:
         error = str(error)
         if "发送转发消息" in error and "失败" in error:
             await UniMessage.text(f"[{info.get_avid()}]发送转发消息失败了！").finish()
@@ -48,11 +49,12 @@ query = on_alconna(
 
 @query.handle()
 async def abstract_handler(
-        session: Session,
+        session: Uninfo,
         avid: Match[str] = AlconnaMatch("avid")):
     if not avid.available:
         await UniMessage.text("听不懂哦~ 再试一次吧~").finish()
     avid = avid.result.upper()
+    logger.info(f"Dealing with {avid}")
     info = await source_manager.get_info_from_any_source(avid)
     if info is None:
         await UniMessage.text("获取失败了！").finish()

@@ -1,7 +1,8 @@
-from pydantic import BaseModel
 from pathlib import Path
 
-from nonebot import require, get_plugin_config
+from pydantic import BaseModel
+
+from nonebot import get_plugin_config, require
 
 require("nonebot_plugin_localstore")
 import nonebot_plugin_localstore as localstore

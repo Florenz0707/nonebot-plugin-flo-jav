@@ -67,4 +67,4 @@ class AVInfo:
 
     def to_string(self):
         return f"AVID：{self._avid}\n标题：{self._title}\n来源：{self._source}\n发行日期：{self._release_date}\n" \
-                f"时长：{self._duration}\n导演：{self._director}"
+               f"时长：{self._duration}\n导演：{self._director}"

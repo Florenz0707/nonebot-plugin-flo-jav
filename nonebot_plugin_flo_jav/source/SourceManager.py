@@ -149,7 +149,7 @@ class SourceManager:
             logger.warning(f"未找到封面URL: {avid}")
 
         # 从刮削器获取额外元数据
-        scraped_data = self._scraper_manager.scrape(avid)
+        scraped_data = self._scraper_manager.scrape_from_any(avid)
         if scraped_data:
             info.update_from_scrapper(scraped_data)
             logger.info(f"已从刮削器获取 {avid} 的额外元数据")

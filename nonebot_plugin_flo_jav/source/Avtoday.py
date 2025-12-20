@@ -19,7 +19,7 @@ class Avtoday(SourceBase):
         self.domain = "avtoday.io"
 
     def get_source_name(self) -> str:
-        return "Avtoday"
+        return "avtoday"
 
     async def get_html(self, avid: str) -> Optional[str]:
         avid_upper = avid.upper()
@@ -29,7 +29,7 @@ class Avtoday(SourceBase):
         for url in urls:
             content = await self.fetch_html(url)
             if content:
-                logger.info(f"成功获取Avtoday页面: {avid.upper()}")
+                logger.info(f"成功获取avtoday页面: {avid.upper()}")
                 return content
         return None
 

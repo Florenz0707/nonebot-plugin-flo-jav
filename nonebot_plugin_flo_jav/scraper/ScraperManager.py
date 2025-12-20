@@ -34,7 +34,7 @@ class ScraperManager:
         """获取所有已注册的刮削器列表"""
         return [(name, scraper) for name, scraper in self.scrapers.items()]
 
-    def scrape(self, avid: str) -> Optional[dict]:
+    def scrape_from_any(self, avid: str) -> Optional[dict]:
         """
         遍历所有刮削器获取元数据
         返回第一个成功获取的元数据
