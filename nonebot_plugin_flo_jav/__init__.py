@@ -1,3 +1,6 @@
+import random
+import time
+
 from nonebot import require
 from nonebot.log import logger
 
@@ -12,6 +15,7 @@ from nonebot_plugin_uninfo import *
 from .scraper.ScraperManager import scraper_manager
 
 from .config import Config
+from .constants import POSSIBLE_PREFIX
 
 __plugin_meta__ = PluginMetadata(
     name="nonebot-plugin-flo-jav",
@@ -57,7 +61,18 @@ async def abstract_handler(
     if not avid.available:
         await UniMessage.text("听不懂哦~ 再试一次吧~").finish()
     avid = avid.result.upper()
-    info = await scraper_manager.scrape_from_any(avid)
-    if info is None:
-        await UniMessage.text("获取失败了！").finish()
-    await intro_sender(info, session.self_id)
+    if avid == "-R":
+        random.seed(int(time.time()))
+        retry = 7
+        while retry > 0:
+            retry -= 1
+            prefix = random.choice(POSSIBLE_PREFIX)
+            number = random.randint(1, 999)
+            if info := await scraper_manager.scrape_from_any(f"{prefix}-{number:03d}"):
+                await intro_sender(info, session.self_id)
+                break
+    else:
+        info = await scraper_manager.scrape_from_any(avid)
+        if info is None:
+            await UniMessage.text("可能是avid不存在！也可能是其他错误呢~").finish()
+        await intro_sender(info, session.self_id)

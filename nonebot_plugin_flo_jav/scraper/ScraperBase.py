@@ -86,8 +86,6 @@ class ScraperBase:
             else:
                 full_url = image_url
 
-            logger.info(f"下载图片: {full_url}")
-
             # 创建保存目录
             save_path.parent.mkdir(parents=True, exist_ok=True)
 

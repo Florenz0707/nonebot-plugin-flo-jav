@@ -12,3 +12,9 @@ HEADERS = {
 }
 
 IMPERSONATE = "edge"
+
+POSSIBLE_PREFIX = [
+    "SSNI", "ABW", "MIDE", "IPX", "MEYD", "CAWD", "PRED", "ABP", "STARS",
+    "MIAA", "SSIS", "MIMK", "FSDSS", "MUDR", "DASD", "SDMF", "JUFE", "JUL",
+    "PPPD", "PPPE", "HND", "TEK", "JUQ", "SAME", "ADN", "MIAB", "EBWH", "MKBD"
+]
