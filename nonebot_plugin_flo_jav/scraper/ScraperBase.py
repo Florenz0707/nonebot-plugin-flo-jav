@@ -35,7 +35,7 @@ class ScraperBase:
         """根据 avid 获取 HTML，子类必须实现"""
         raise NotImplementedError
 
-    def parse_html(self, html: str, avid: str) -> Optional[dict]:
+    def parse_html(self, avid: str, html: str) -> Optional[dict]:
         """解析 HTML 获取元数据，子类必须实现"""
         raise NotImplementedError
 

@@ -27,8 +27,8 @@ class ScraperManager:
     def __init__(self,
                  proxy: Optional[str] = None,
                  image_path: Optional[Path] = None):
-        self.proxy = proxy
-        self.image_path = image_path
+        self.proxy: Optional[str] = proxy
+        self.image_path: Optional[Path] = image_path
         self.avinfo_repo = avinfo_repo
         self.scrapers: Dict[str, ScraperBase] = {}
         for name, scraper in self.SCRAPER_CLASSES.items():
@@ -73,7 +73,7 @@ class ScraperManager:
     async def _load_cache(self, avid: str) -> Optional[AVInfo]:
         if metadata := self.avinfo_repo.get_from_source(avid, None):
             if not self.get_image_path(avid).exists():
-                scraper = self.scrapers[metadata.get_scraper_name()]
+                scraper = self.scrapers[metadata.get_source()]
                 if not await scraper.download_image(metadata.get_image_url(), self.get_image_path(avid)):
                     logger.warning(f"下载封面失败：{metadata.get_image_url()}")
                     return None

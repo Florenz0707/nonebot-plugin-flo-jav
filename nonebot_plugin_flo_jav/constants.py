@@ -16,5 +16,17 @@ IMPERSONATE = "edge"
 POSSIBLE_PREFIX = [
     "SSNI", "ABW", "MIDE", "IPX", "MEYD", "CAWD", "PRED", "ABP", "STARS",
     "MIAA", "SSIS", "MIMK", "FSDSS", "MUDR", "DASD", "SDMF", "JUFE", "JUL",
-    "PPPD", "PPPE", "HND", "TEK", "JUQ", "SAME", "ADN", "MIAB", "EBWH", "MKBD"
+    "PPPD", "PPPE", "HND", "TEK", "JUQ", "SAME", "ADN", "MIAB", "EBWH", "MKBD",
+    "WANZ", "MIRD", "JUY", "NMSL", "TPPN", "ROE", "GVH", "START", "DLDSS", "APGH",
+    "FNS", "MIFD", "ABF", "ACHJ", "FOCS", "PRST", "CJOD", "MUKC", "MRSS", "FTAV",
+    "FFT", "MFYD", "MANX",
 ]
+
+
+if __name__ == "__main__":
+    prefix = dict()
+    for p in POSSIBLE_PREFIX:
+        if p in prefix.keys():
+            print(p)
+        else:
+            prefix[p] = True

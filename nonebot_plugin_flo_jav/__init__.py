@@ -38,11 +38,11 @@ async def intro_sender(info: AVInfo, uid: str):
                image(path=scraper_manager.get_image_path(info.get_avid())))
     node = CustomNode(uid=uid, name="", content=content)
     try:
-        await UniMessage.reference(node).finish()
+        await UniMessage.reference(node).send()
     except Exception as error:
         error = str(error)
         if "发送转发消息" in error and "失败" in error:
-            await UniMessage.text(f"[{info.get_avid()}]发送转发消息失败了！").finish()
+            await UniMessage.text(f"[{info.get_avid()}]发送转发消息失败了！").send()
 
 
 query = on_alconna(
@@ -62,6 +62,7 @@ async def abstract_handler(
         await UniMessage.text("听不懂哦~ 再试一次吧~").finish()
     avid = avid.result.upper()
     if avid == "-R":
+        await UniMessage.text("正在生成...").send()
         random.seed(int(time.time()))
         retry = 7
         while retry > 0:
@@ -70,9 +71,11 @@ async def abstract_handler(
             number = random.randint(1, 999)
             if info := await scraper_manager.scrape_from_any(f"{prefix}-{number:03d}"):
                 await intro_sender(info, session.self_id)
-                break
+                return
+        await UniMessage.text("找了好久都没有找到呢~重试一下吧！").finish()
     else:
+        await UniMessage.text("正在查询...").send()
         info = await scraper_manager.scrape_from_any(avid)
         if info is None:
-            await UniMessage.text("可能是avid不存在！也可能是其他错误呢~").finish()
+            await UniMessage.text("可能是avid不存在，也可能是其他错误呢~").finish()
         await intro_sender(info, session.self_id)
